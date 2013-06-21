@@ -4,9 +4,9 @@
   <div class="no-layout">
     <h1 class="font21 serif"><%- t('sample_title')%></h1>
     <section class="basic">
-      <p>
-        <%- i18n('sample_message')%> <img src="<%= img('t34.jpg') %>" alt="">
-      </p>
+      <p>This string comes from the locales file:<%- i18n('sample_message')%></p>
+      <p>This image is served up from the edge server:<img src="<%= img('t34.jpg') %>" alt="T34 Tank"></p>
+      <p>This date comes through the controller/server:<%- serverDate %></p>
     </section>
   </div>
 </div>
