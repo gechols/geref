@@ -1,0 +1,24 @@
+<% page = { 'title' : 'Other page', 'key': 'INDEX_PAGE_NAME'} %>
+<% assets = { 'css' : ["angular.css"], 'js' : ["angular-1.0.3.js", "angular/myAngularApp.js", "angular/myAngularAppController.js"] } %>
+<div id="main" class="experiments" xmlns="http://www.w3.org/1999/html">
+  <div class="no-layout">
+    <h1 class="font21 serif">Angular Sample</h1>
+    <section class="basic">
+      <p>The following is a sample of a simple AngularJS application</p>
+      <div ng-app="myAngularApp" data-ng-controller="sourceDataController">
+
+        <h2>Players ({{getListSize()}})</h2>
+        <ul class="player-list">
+          <li class="player" ng-repeat="item in list"><label>Player:</label>{{item.display}}<label>Score:</label><input type="text" ng-model="item.value"/></li>
+        </ul>
+
+        <form class="form-horizontal">
+          <label>Player:</label><input type="text" ng-model="formDisplay"/>
+          <label>Score:</label><input type="text" ng-model="formValue"/>
+          <button class="btn btn-water" ng-click="addItem()">Add Player</button>
+        </form>
+
+      </div>
+    </section>
+  </div>
+</div>

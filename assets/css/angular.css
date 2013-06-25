@@ -1,0 +1,8 @@
+.player-list {
+  list-style: none;
+}
+
+.player-list label {
+  padding-left: 5px;
+  padding-right: 10px;
+}

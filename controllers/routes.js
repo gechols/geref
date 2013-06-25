@@ -1,4 +1,12 @@
 module.exports = function(app) {
+
+  app.set("view options", {
+    layout: "layouts/myLayout"
+  });
+
+  app.get('/angular', function(req, res) {
+    res.render('angular/index', {});
+  });
   app.get('/sample', function(req, res) {
     res.render('sample', {serverDate: new Date()});
   });
