@@ -1,0 +1,31 @@
+nav {
+
+  &.navbar {
+    background-color: $appBackgroundColor;
+    background: linear-gradient(to bottom, #808080 0%, $appBackgroundColor  100%) repeat scroll 0 0 transparent;
+    padding: 5px 10px 10px 5px;
+  }
+
+  a {
+    text-decoration: none;
+    padding: 5px;
+    max-width: 250px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+
+    &.active {
+      background-color: $menuSelectedColor;
+    }
+
+    &:hover {
+      background-color: $menuFocusColor;
+    }
+  }
+
+  &.vmenu a {
+    display: block;
+  }
+
+
+}

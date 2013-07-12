@@ -1,0 +1,12 @@
+<% page = { 'title' : 'Responsive Page', 'key': 'responsive'} %>
+<% assets = { 'css' : ['responsive.styl'], 'js' : [] } %>
+<%- partial("_navbar", {"location": "responsive"}) %>
+
+<div id="main">
+  <h1>This page is designed to be responsive</h1>
+  <p>The following menu should respond to different size devices (browser sizes).</p>
+  <nav class="hmenu">
+    <a href="/angular">Frontier Apprentice (Angular)</a>
+    <a href="/responsive" class="active">Html5/CSS Apprentice (Menus)</a>
+  </nav>
+</div>

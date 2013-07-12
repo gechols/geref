@@ -1,16 +1,11 @@
-<% page = { 'title' : 'PAGE_TITLE', 'key': 'INDEX_PAGE_NAME'} %>
-<% assets = { 'css' : [], 'js' : [] } %>
-<div id="main" class="experiments">
-  <div class="no-layout">
-    <h1 class="font21 serif"><%- t('welcome_title')%></h1>
-    <section class="basic">
-      <p>
-        <%- t('welcome_message')%> <img src="<%= img('icon/arrow_left_white_11x11.png') %>" alt="">
-      </p>
+<% page = { 'title' : 'GERef Homepage', 'key': 'homepage'} %>
+<% assets = { 'css' : ['homepage.styl'], 'js' : [] } %>
+<%- partial("_navbar", {"location": "home"}) %>
 
-      <a href="sample" class="btn btn-water"><%- i18n('sample_link')%></a>
-      <a href="angular" class="btn btn-water">Angular Sample</a>
+<div id="main">
+  <h1>Welcome To My Reference App</h1>
+  <p>This web application was built as a tool for me to learn concepts of web
+  application programming.</p>
 
-    </section>
-  </div>
+  <p>Use the menu at the top to navigate to the various pages.</p>
 </div>

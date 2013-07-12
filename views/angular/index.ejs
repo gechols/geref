@@ -1,8 +1,10 @@
-<% page = { 'title' : 'Other page', 'key': 'INDEX_PAGE_NAME'} %>
-<% assets = { 'css' : ["angular.css"], 'js' : ["angular-1.0.3.js", "angular/myAngularApp.js", "angular/myAngularAppController.js"] } %>
+<% page = { 'title' : 'Angular Page', 'key': 'angular'} %>
+<% assets = { 'css' : ["angular.styl"], 'js' : ["angular-1.0.3.js", "angular/myAngularApp.js", "angular/myAngularAppController.js"] } %>
+<%- partial("_navbar", {"location": "angular"}) %>
+
 <div id="main" class="experiments" xmlns="http://www.w3.org/1999/html">
   <div class="no-layout">
-    <h1 class="font21 serif">Angular Sample</h1>
+    <h1>Angular Sample</h1>
     <section class="basic">
       <p>The following is a sample of a simple AngularJS application</p>
       <div ng-app="myAngularApp" data-ng-controller="sourceDataController">

@@ -8,7 +8,7 @@
     <%- css('fresh_responsive.css') %>
   <% } %>
    
-  <%- css('fresh.css') %> 
+  <%- css('global.css') %>
 
 
   <% if(typeof assets != "undefined" && assets.css) { %>
@@ -28,9 +28,9 @@
 </head>
 <body>
   
-  <p>Header</p>
+  <p class="header"><a href="/">Grant's Reference App</a></p>
    <%- body %>
-  <p>Footer</p>
+  <p class="footer">All work by Grant Echols</p>
 
   <% if(process.env.NODE_ENV == "production") { %>
     <%- js('clientManifest.js') %>

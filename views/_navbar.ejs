@@ -1,0 +1,13 @@
+<%
+  getActive: function getActive(tag) {
+    if (location && tag && location.toLowerCase().trim() === tag.toLowerCase().trim()) {
+      return 'class="active"';
+    }
+  }
+%>
+
+<nav class="navbar">
+  <a href="/" <%- getActive("home") %>>Home</a>
+  <a href="/angular" <%- getActive("angular") %>>Angular</a>
+  <a href="/responsive" <%- getActive("responsive") %>>Responsive</a>
+</nav>
