@@ -2,13 +2,26 @@
 @import 'common/fonts'
 @import 'common/menus'
 
+a:link,
+a:visited,
+a:hover,
+a:active {
+  color: $linkColor;
+  font-family: sans-serif;
+}
+
 .header,
 .footer {
+  font-size: $smallFontSize;
   background-color: $appBackgroundColor;
   background: linear-gradient(to bottom, $appBackgroundColor 0%, #808080 100%) repeat scroll 0 0 transparent;
 
   padding: 5px;
   text-align: center;
+
+  a {
+    text-decoration: none;
+  }
 }
 
 .header {
