@@ -1,2 +1,47 @@
 @import 'common/global'
 
+@media screen and (min-width: 980px) {
+  > h1 {
+    font-size: $extraLargeFontSize;
+    text-align: center;
+  }
+}
+
+@media screen and (min-width: 769px) and (max-width: 979px) {
+  h1 {
+    font-size: $largeFontSize;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  h1 {
+    font-size: $mediumFontSize;
+    font-weight: bold;
+  }
+}
+
+article {
+  font-size: $mediumFontSize;
+}
+
+aside {
+  font-size: $smallFontSize;
+}
+
+section {
+  border-style: solid;
+  border-color: #808080;
+  border-width: 1px;
+  padding: 5px;
+  margin: 10px;
+
+  a {
+    white-space: nowrap;
+  }
+
+  &.row-fluid {
+    border: none;
+    padding: 15px;
+    margin: 0px;
+  }
+}
