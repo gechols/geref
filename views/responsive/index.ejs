@@ -21,32 +21,42 @@
 
   <section class="row-fluid">
     <article class="span8 well well-large">
-      <p>
-        Responsive web design (RWD) is a web design approach aimed at crafting sites to provide an
-        optimal viewing experience—easy reading and navigation with a minimum of resizing, panning, and scrolling—across
-        a wide range of devices (from desktop computer monitors to mobile phones).
-      </p>
+      <blockquote>
+        <p>
+          Responsive web design (<abbr title="Responsive Web Design">RWD</abbr>) is a web design approach aimed at crafting sites to provide an
+          optimal viewing experience—easy reading and navigation with a minimum of resizing, panning, and scrolling—across
+          a wide range of devices (from desktop computer monitors to mobile phones).
+        </p>
+      </blockquote>
       <p>
         This page demonstrates a few of the concepts of responsive web design. You can see the responsive nature of the
         page by resizing your web browser to smaller width or by viewing the page on your table or phone.
       </p>
       <p>
         The components that will respond to the changes include (from top to bottom):
-        <ul>
-          <li>The navigation bar will change to a drop-down menu (like <i class="icon-tasks"></i>)</li>
-          <li>The header will change font size</li>
-          <li>The comment below the header will change (using hide)</li>
-          <li>The horizontal menu will wrap as needed</li>
-          <li>The article content will change from 2 column view to a single, stacked column view</li>
-        </ul>
+        <dl class="dl-horizontal">
+          <dt>Navigation Bar</dt><dd>Changes to a drop-down menu (like <i class="icon-tasks"></i>)</dd>
+          <dt>Header</dt><dd>Changes font size</dd>
+          <dt>Header Comment</dt><dd>Changes text by hiding/showing content</dd>
+          <dt>Horizontal Menu</dt><dd>Wraps as needed</dd>
+          <dt>Article Content</dt><dd>Changes from 2 column view to a single, stacked column view</dt>
+        </dl>
+      </p>
+      <p>
+        When working with a responsive page that needs to work on a phone or other small device it is vital that the
+        meta tag be included in the header to tell the browser NOT to attempt scaling the full page:
+        <code>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</code>. Otherwise the work
+        done to adjust to smaller screens will be wasted.
       </p>
     </article>
     <aside class="span3 muted">
-      <label for="more-rwd">More on RWD</label>
-      <p id="more-rwd">
-        A site designed with RWD adapts the layout to the viewing environment by using fluid, proportion-based grids,
-        flexible images, and CSS3 media queries, an extension of the @media rule
-      </p>
+      <label for="more-rwd" class="pull-right">More on <abbr title="Responsive Web Design">RWD</abbr></label>
+      <blockquote class="pull-right">
+        <p id="more-rwd">
+          A site designed with <abbr title="Responsive Web Design">RWD</abbr> adapts the layout to the viewing environment by using fluid, proportion-based grids,
+          flexible images, and CSS3 media queries, an extension of the @media rule
+        </p>
+      </blockquote>
     </aside>
   </section>
 </div>
