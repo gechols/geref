@@ -1,0 +1,63 @@
+<% page = { 'title' : 'Bootstrap Scafolding', 'key': 'bootstrap'} %>
+<% assets = { 'css' : ['bootstrap.styl'], 'js' : [] } %>
+<%- partial("_navbar", {"location": "bootstrap"}) %>
+
+<div id="main">
+  <h3>Typography and Links</h3>
+  <p>The following two iframes use the same content - one with bootstrap and the other without.</p>
+  <div class="row-fluid">
+    <div class="span6">
+      <label for="withoutBootstrap" class="lead">Before Bootstrap</label>
+      <iframe id="withoutBootstrap" src="/bootstrap/withoutBootstrap">This should be the non-Bootstrap page</iframe>
+    </div>
+    <div class="span6">
+      <label for="withBootstrap" class="lead">After Bootstrap</label>
+      <iframe id="withBootstrap" src="bootstrap/withBootstrap">This should be the Bootstrap page</iframe>
+    </div>
+  </div>
+
+  <div class="row-fluid">
+    <h3 class="span3">Grid System</h3>
+  </div>
+  <div class="row">
+    <span class="span1">One</span>
+    <span class="span1">Two</span>
+    <span class="span1">Three</span>
+    <span class="span1">Four</span>
+    <span class="span1">Five</span>
+    <span class="span1">Six</span>
+    <span class="span1">Seven</span>
+    <span class="span1">Eight</span>
+    <span class="span1">Nine</span>
+    <span class="span1">Ten</span>
+    <span class="span1">Eleven</span>
+    <span class="span1">Twelve</span>
+  </div>
+  <div class="row">
+    <span class="span3">Using Fixed Grids</span>
+    <span class="span9">The row has a fixed width which does not grow with the width of the browser. It can be limiting if you want to take advantage of larger screens.</span>
+  </div>
+
+  <div class="row-fluid">
+    <h3 class="span3">Fluid Grid System</h3>
+  </div>
+  <div class="row-fluid">
+    <span class="span1">One</span>
+    <span class="span1">Two</span>
+    <span class="span1">Three</span>
+    <span class="span1">Four</span>
+    <span class="span1">Five</span>
+    <span class="span1">Six</span>
+    <span class="span1">Seven</span>
+    <span class="span1">Eight</span>
+    <span class="span1">Nine</span>
+    <span class="span1">Ten</span>
+    <span class="span1">Eleven</span>
+    <span class="span1">Twelve</span>
+  </div>
+  <div class="row-fluid">
+    <span class="span3">Using Fluid Grids</span>
+    <span class="span9">The row uses percentages which allow the grid elements to grow and shrink with the width of the browser. It can be liberating if you want to take advantage of larger screens.</span>
+  </div>
+
+</div>
