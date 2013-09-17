@@ -1,0 +1,13 @@
+<% page = { 'title' : 'GERef Homepage', 'key': 'homepage'} %>
+<% assets = { 'css' : ['homepage.styl'], 'js' : ['ejs.js', 'clientEjs.js'] } %>
+<%- partial("_navbar", {"location": "clientEjs"}) %>
+
+<div id="main">
+  <h1>Client EJS Example</h1>
+  <div class="row-fluid">
+    <div class="span6">
+      <%- partial("_template", {platform: "server"}) %>
+    </div>
+    <div id="clientEJS" class="span6"></div>
+  </div>
+</div>
