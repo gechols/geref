@@ -6,7 +6,8 @@ function MultiColumnList (el, config) {
   var configDefaults = {
     numColumns: 4,
     numRows: 0,         // 0 means no limit
-    containerType: "<span>"
+    containerType: "<span>",
+    useCss3: true       // false means not to use column-count even if supported
   };
 
   // This is built using the 12 column layouts from Bootstrap
@@ -25,9 +26,14 @@ function MultiColumnList (el, config) {
     return;
   }
 
+  var style = null;
+  if (config.useCss3 && (style = whichStyleSupported(["-moz-column-count", "-webkit-column-count", "column-count"]))) {
+    $(el).css(style, config.numColumns.toString());
+    return;
+  }
+
   var listItems = $(el).children('li');
 
-debugger;
   if (config.numRows && config.numRows > 0) {
     var maxItems = config.numColumns * config.numRows;
     if (listItems.length > maxItems) {
@@ -38,7 +44,7 @@ debugger;
     }
   }
 
-  var itemsPerColumn = listItems.length / config.numColumns;
+  var itemsPerColumn = Math.floor(listItems.length / config.numColumns);
   var modItemsPerColumn = listItems.length % config.numColumns;
 
   for (var colIdx = 0; colIdx < config.numColumns; colIdx++) {

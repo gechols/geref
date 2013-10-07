@@ -1,12 +1,12 @@
 <% page = { 'title' : 'GERef Homepage', 'key': 'homepage'} %>
-<% assets = { 'css' : ['homepage.styl'], 'js' : [] } %>
+<% assets = { 'css' : ['homepage.styl'], 'js' : ["CSSDetect.js"] } %>
 <%- partial("_navbar", {"location": "multiColumns"}) %>
 
 <div id="main">
   <h1>Muti Column List Example</h1>
   <ul class="row-fluid unstyled" data-control="MultiColumnList" data-config='{
-    "numColumns": 6,
-    "numRows": 2}'>
+    "numColumns": 4,
+    "numRows": 3}'>
     <li>One-one</li>
     <li>One-two</li>
     <li>One-three</li>
