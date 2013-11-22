@@ -1,0 +1,41 @@
+<% page = { 'title' : 'Carousel Page', 'key': 'carousel'} %>
+<% assets = { 'css' : ['carousel.styl'], 'js' : [] } %>
+<%- partial("_navbar", {"location": "carousel"}) %>
+
+<div id="main">
+  <section>
+    <h1>Carousel Demo</h1>
+
+    <div class="container">
+      <div data-ride="carousel" class="carousel slide" id="carousel-example-captions">
+        <div class="carousel-inner">
+          <div class="item active">
+            <img class="carousel-image" src="<%= img('capetown1.jpg') %>"/>
+            <div class="carousel-caption">
+              <p>First view of Cape Town</p>
+            </div>
+          </div>
+          <div class="item">
+            <img class="carousel-image" src="<%= img('capetown2.jpg') %>"/>
+            <div class="carousel-caption">
+              <p>Second view of Cape Town</p>
+            </div>
+          </div>
+          <div class="item">
+            <img class="carousel-image" src="<%= img('capetown3.jpg') %>"/>
+            <div class="carousel-caption">
+              <p>Third view of Cape Town</p>
+            </div>
+          </div>
+        </div>
+        <a data-slide="prev" href="#carousel-example-captions" class="left carousel-control">
+          &lsaquo;
+        </a>
+        <a data-slide="next" href="#carousel-example-captions" class="right carousel-control">
+          &rsaquo;
+        </a>
+      </div>
+    </div>
+  </section>
+
+</div>
