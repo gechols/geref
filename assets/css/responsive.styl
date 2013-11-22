@@ -1,10 +1,10 @@
 @import 'common/global'
 
 @font-face {
-  font-family : orc ;
-  src: url("VTCGoblinHand.eot");
-  src: url("VTCGoblinHand.otf");
-  src: url("VTCGoblinHand.ttf") format("truetype");
+  font-family: 'Goblin One';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Goblin One'), local('GoblinOne'), url(http://themes.googleusercontent.com/static/fonts/goblinone/v3/oMm__6Fu4fp1Uf80vOEkgL3hpw3pgy2gAi-Ip7WPMi0.woff) format('woff');
 }
 
 @media screen and (min-width: 980px) {
@@ -14,11 +14,12 @@
   }
 
   .orc {
-    background-image: url("orc_lg.jpg");
-    background-position: center;
+    font-family: "Goblin One", serif;;
+    background-image: url("orc_lg.png"), url("grass.png");
+    background-position: center, bottom;
     background-repeat: no-repeat;
-    background-size: 200px;
-    min-height: 340px;
+    background-size: 230px;
+    min-height: 440px;
   }
 }
 
@@ -28,7 +29,7 @@
   }
 
   .orc {
-    font-family: orc;
+    font-family: "Goblin One", serif;;
     background-image: url("orc_md.jpg");
     background-position: center;
     background-repeat: no-repeat;
@@ -76,5 +77,24 @@ section {
     border: none;
     padding: 15px;
     margin: 0px;
+  }
+}
+
+section.icons {
+  border: none;
+
+  .hover-icon {
+    max-width: 80px;
+    max-height: 80px;
+    opacity:0.4;
+
+    &:hover {
+      opacity:1.0;
+    }
+  }
+
+  figure,
+  figcaption {
+    display: inline-block;
   }
 }

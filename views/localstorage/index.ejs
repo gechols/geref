@@ -1,0 +1,16 @@
+<% page = { 'title' : 'Local Storage Page', 'key': 'localstorage'} %>
+<% assets = { 'css' : ['homepage.styl'], 'js' : [] } %>
+<%- partial("_navbar", {"location": "localstorage"}) %>
+
+<div id="main">
+  <section>
+    <hgroup>
+      <h1>Local Storage Demo</h1>
+      <h2>Todo list</h2>
+    </hgroup>
+    <ul id="todoList" contenteditable="true" data-control="LocalStorage" title="This list is editable - try it">
+      <li></li>
+    </ul>
+  </section>
+
+</div>
