@@ -5,9 +5,9 @@
   "main": "./app.js",
   "dependencies": {
     "async": ">= 0.1.12",
-    "theme-engage": "git+https://github.com/fs-webdev/theme-engage.git",
-    "woodruff": "git+https://github.com/fs-webdev/woodruff.git",
+    "theme-engage": "git+https://github.com/fs-webdev/theme-engage.git#0.3.20",
     "frontier-build-tools": "git+https://github.com/fs-webdev/frontier-build-tools.git",
+    "woodruff": "git+https://github.com/fs-webdev/woodruff.git#2.1.2",
     "startup": "~0.1.12"
   },
   "devDependencies": {
@@ -16,7 +16,7 @@
     "mocha": "~1.8.2"
   },
   "engines": {
-    "node": "0.8.x",
+    "node": "0.10.x",
     "npm": "1.1.x"
   },
   "scripts": {
