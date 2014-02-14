@@ -1,0 +1,22 @@
+<% page = { 'title' : 'Javascript Apprentice Page', 'key': 'javascript'} %>
+<% assets = { 'css' : ['javascript.styl'], 'js' : [] } %>
+<%- partial("_navbar", {"location": "javascript"}) %>
+
+<div id="main">
+  <section>
+    <h1>JavaScript Demo</h1>
+    <form data-control="FormControl">
+      <section>
+        <div class="control-group"><label for="username">Username:</label><input type="text" id="username"></div>
+        <div class="control-group"><label for="password">Password:</label><input type="password" id="password"></div>
+      </section>
+      <section>
+        <div class="control-group"><label for="phone">Email:</label><input type="text" id="email" data-validation="email" placeholder="name@host"><span class="validation-error help-inline">Email is not valid</span></div>
+        <div class="control-group"><label for="phone">Phone:</label><input type="text" id="phone" data-validation="phone" placeholder="###-###-####"><span class="validation-error help-inline">Phone number is not valid</span></div>
+        <div class="control-group"><label for="ssn">SSN:</label><input type="text" id="ssn" data-validation="ssn" placeholder="###-###-####"><span class="validation-error help-inline">Social security number is not valid</span></div>
+      </section>
+      <div class="control-group"><label for="remember">Remember me:</label><input type="checkbox" id="remember"></div>
+      <input type="button" value="Login">
+    </form>
+  </section>
+</div>
