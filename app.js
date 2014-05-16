@@ -1,8 +1,8 @@
 /**
  * Module dependencies
  */
-var woodruff = require("woodruff");
-var themeEngage = require('theme-engage');
+var woodruff = require("woodruff")
+  , themeEngage = require("theme-engage");
 
 /**
  * Expose the app
