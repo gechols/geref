@@ -2,16 +2,38 @@ function PromiseControl (el, config) {
   var Q = require("q");
   var $el = $(el);
 
+  console.log("LOOK: Starting promise1 Q=", Q);
+
   $el.find(".promiseButton").on("click", function(evt) {
     evt.preventDefault();
-    $el.find(".promiseText").text("Starting promise");
-    console.log("Starting promise1 Q=", Q);
-//    promise1.resolve();
+    if ($(evt.target).attr("data-promisetype") === "parallel") {
+      var promise1 = getTimeoutPromise(".promise1", 5000).then(success, failure);
+      var promise2 = getTimeoutPromise(".promise2", 8000).then(success, failure);
+      var promise3 = getTimeoutPromise(".promise3", 10000).then(success, failure);
+    }
+    else {
+      alert("Not implemented yet")
+    }
   });
 
   $el.find(".resetButton").on("click", function(evt) {
     $el.find(".promiseText").text("No current promise");
   });
+
+  function getTimeoutPromise(sel, delayMS) {
+    $(sel).text("Starting promise");
+    var deferred = Q.defer();
+    setTimeout(function() {deferred.resolve(sel);}, delayMS);
+    return deferred.promise;
+  }
+
+  function success(sel) {
+    $(sel).text("Completed");
+  }
+
+  function failure(error) {
+    console.log("LOOK: failure called:", error);
+  }
 
 //  var promise1 = new Q.Promise(function(success, failure) {
 //    $(".promise1").text("Active");

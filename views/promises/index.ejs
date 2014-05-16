@@ -1,5 +1,5 @@
 <% page = { 'title' : 'Promises', 'key': 'promises'} %>
-<% assets = { 'css' : ['homepage.styl'], 'js' : ['PromiseControl.js'] } %>
+<% assets = { 'css' : ['homepage.styl'], 'js' : [] } %>
 <%- partial("_navbar", {"location": "promises"}) %>
 
 <div id="main">
@@ -7,6 +7,7 @@
   <p>Choose the method for executing the promises below</p>
   <div data-control="PromiseControl">
     <button class="promiseButton btn btn-water" data-promiseType="parallel">Parallel</button>
+    <button class="promiseButton btn btn-water" data-promiseType="sequential">Sequential</button>
     <button class="resetButton btn btn-water">Reset</button>
     <p class="promiseText promise1">No current promise</p>
     <p class="promiseText promise2">No current promise</p>
