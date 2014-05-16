@@ -6,13 +6,20 @@ function PromiseControl (el, config) {
 
   $el.find(".promiseButton").on("click", function(evt) {
     evt.preventDefault();
+
     if ($(evt.target).attr("data-promisetype") === "parallel") {
-      var promise1 = getTimeoutPromise(".promise1", 5000).then(success, failure);
-      var promise2 = getTimeoutPromise(".promise2", 8000).then(success, failure);
-      var promise3 = getTimeoutPromise(".promise3", 10000).then(success, failure);
+      getTimeoutPromise(".promise1", 5000).then(success, failure);
+      getTimeoutPromise(".promise2", 8000).then(success, failure);
+      getTimeoutPromise(".promise3", 10000).then(success, failure);
     }
     else {
-      alert("Not implemented yet")
+      getTimeoutPromise(".promise1", 5000).then(function(sel) {
+        success(sel);
+        getTimeoutPromise(".promise2", 8000).then(function(sel) {
+          success(sel);
+          getTimeoutPromise(".promise3", 10000).then(success);
+        });
+      });
     }
   });
 
