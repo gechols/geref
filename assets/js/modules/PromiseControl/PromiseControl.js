@@ -2,8 +2,6 @@ function PromiseControl (el, config) {
   var Q = require("q");
   var $el = $(el);
 
-  console.log("LOOK: Starting promise1 Q=", Q);
-
   $el.find(".promiseButton").on("click", function(evt) {
     evt.preventDefault();
 
