@@ -7,6 +7,9 @@ module.exports = function(app) {
   app.get('/angular', function(req, res) {
     res.render('angular/index', {});
   });
+  app.get('/gemstore', function(req, res) {
+    res.render('angular/gemstore/gemstore', {});
+  });
   app.get('/responsive', function(req, res) {
     res.render('responsive/index', {});
   });

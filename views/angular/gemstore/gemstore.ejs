@@ -1,0 +1,63 @@
+<% page = { 'title' : 'Angular GemStore', 'key': 'gemstore'} %>
+<% assets = {
+  'css' : [
+    "gemstore.styl"
+  ],
+  'js' : [
+    "angular-1.2.16/angular.js",
+    "angular/gemstore/gemstore.js"
+  ]
+} %>
+<%- partial("_navbar", {"location": "angular"}) %>
+
+<div id="main" class="gemstore" ng-app="store" xmlns="http://www.w3.org/1999/html">
+  <h1>Angular Gemstore Sample</h1>
+  <div ng-cloak data-ng-controller="StoreController as store">
+    <div ng-repeat="product in store.products">
+      <hr/>
+      <product-title></product-title>
+      <button ng-show="product.canPurchase">Add To Cart</button>
+      <section>
+        <ul class="nav nav-pills" ng-init="tab = 1">
+          <li ng-class="{active: tab === 1}"><a href ng-click="tab = 1">Description</a></li>
+          <li ng-class="{active: tab === 2}"><a href ng-click="tab = 2">Reviews</a></li>
+          <li ng-class="{active: tab === 3}"><a href ng-click="tab = 3">Add a Review</a></li>
+        </ul>
+      </section>
+      <div ng-show="tab===1">
+        <p>{{ product.description }}</p>
+      </div>
+      <div ng-show="tab===2">
+        <div ng-repeat="review in product.reviews">
+          <blockquote>
+            <strong>{{ review.stars }} stars</strong>
+            {{ review.body }}
+            <cite class="clearfix">-{{ review.author }}</cite>
+          </blockquote>
+        </div>
+      </div>
+      <div ng-show="tab===3">
+        <form name="reviewForm"
+              ng-controller="ReviewController as reviewCtrl"
+              ng-submit="reviewForm.$valid && reviewCtrl.addReview(product)"
+              novalidate>
+          <blockquote class="preview">
+            <strong>{{ reviewCtrl.review.stars }} stars</strong>
+            {{ reviewCtrl.review.body }}
+            <cite class="clearfix">-{{ reviewCtrl.review.author }}</cite>
+          </blockquote>
+          <label for="starField">Rating:</label>
+          <select id="starField" ng-model="reviewCtrl.review.stars" ng-options="stars for stars in [5,4,3,2,1]" required>
+            <option value="">Choose one...</option>
+          </select>
+          <label for="commentsField">Comments:</label>
+          <textarea id="commentsField" ng-model="reviewCtrl.review.body" required></textarea>
+          <label for="authorField">Author:</label>
+          <input id="authorField" data-ng-model="reviewCtrl.review.author" type="email" required/>
+          <div>Form is valid: {{reviewForm.$valid}}</div>
+          <input type="submit" value="Submit"/>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

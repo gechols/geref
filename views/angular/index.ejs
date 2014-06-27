@@ -1,10 +1,11 @@
 <% page = { 'title' : 'Angular Page', 'key': 'angular'} %>
-<% assets = { 'css' : ["angular.styl"], 'js' : ["angular-1.0.3.js", "angular/myAngularApp.js", "angular/myAngularAppController.js"] } %>
+<% assets = { 'css' : ["angular.styl"], 'js' : ["angular-1.2.16/angular.js", "angular/myAngularApp.js", "angular/myAngularAppController.js"] } %>
 <%- partial("_navbar", {"location": "angular"}) %>
 
 <div id="main" class="experiments" xmlns="http://www.w3.org/1999/html">
   <div class="no-layout">
     <h1>Angular Sample</h1>
+    <h2><a href="/gemstore">Angular Gemstore App</a></h2>
     <section class="basic">
       <p>The following is a sample of a simple AngularJS application</p>
       <div ng-app="myAngularApp" data-ng-controller="sourceDataController">
