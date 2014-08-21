@@ -4,6 +4,12 @@ module.exports = function(app) {
     layout: "layouts/myLayout"
   });
 
+  app.get('/controls', function(req, res) {
+    res.render('controls/index', {});
+  });
+  app.get('/controls/init', function(req, res) {
+    res.render('controls/init', {});
+  });
   app.get('/angular', function(req, res) {
     res.render('angular/index', {});
   });
