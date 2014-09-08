@@ -3,7 +3,12 @@
  * @param config The configuration parameters.
  */
 function MultiColumnList (el, config) {
-  var cssDetect = require("CSSDetect");
+
+  var cssDetect;
+  require.ensure(["CSSDetect"], function(require) {
+    cssDetect = require("CSSDetect");
+    init();
+  });
 
   var configDefaults = {
     numColumns: 4,
@@ -22,48 +27,50 @@ function MultiColumnList (el, config) {
   $.extend(newConfig, configDefaults, config);
   config = newConfig;
 
-  columnIdx = validNumColumns.indexOf(config.numColumns);
-  if (columnIdx === -1) {
-    alert("Unsupported number of columns:" + config.numColumns);
-    return;
-  }
+  function init() {
+    columnIdx = validNumColumns.indexOf(config.numColumns);
+    if (columnIdx === -1) {
+      alert("Unsupported number of columns:" + config.numColumns);
+      return;
+    }
 
-  var style = null;
-  if (config.useCss3 && (style = cssDetect.whichStyleSupported(["-moz-column-count", "-webkit-column-count", "column-count"]))) {
-    $(el).css(style, config.numColumns.toString());
-    return;
-  }
+    var style = null;
+    if (config.useCss3 && (style = cssDetect.whichStyleSupported(["-moz-column-count", "-webkit-column-count", "column-count"]))) {
+      $(el).css(style, config.numColumns.toString());
+      return;
+    }
 
-  var listItems = $(el).children('li');
+    var listItems = $(el).children('li');
 
-  if (config.numRows && config.numRows > 0) {
-    var maxItems = config.numColumns * config.numRows;
-    if (listItems.length > maxItems) {
-      for (var i = listItems.length - 1; i >= maxItems; i--) {
-        $(listItems[i]).remove();
-        listItems.splice(i, 1);
+    if (config.numRows && config.numRows > 0) {
+      var maxItems = config.numColumns * config.numRows;
+      if (listItems.length > maxItems) {
+        for (var i = listItems.length - 1; i >= maxItems; i--) {
+          $(listItems[i]).remove();
+          listItems.splice(i, 1);
+        }
       }
     }
-  }
 
-  var itemsPerColumn = Math.floor(listItems.length / config.numColumns);
-  var modItemsPerColumn = listItems.length % config.numColumns;
+    var itemsPerColumn = Math.floor(listItems.length / config.numColumns);
+    var modItemsPerColumn = listItems.length % config.numColumns;
 
-  for (var colIdx = 0; colIdx < config.numColumns; colIdx++) {
-    var columnEl = $(config.containerType);
-    columnEl.addClass(spanClasses[columnIdx]);
-    var spanItemsCount = itemsPerColumn;
-    if (modItemsPerColumn) {
-      spanItemsCount++;
-      modItemsPerColumn--;
+    for (var colIdx = 0; colIdx < config.numColumns; colIdx++) {
+      var columnEl = $(config.containerType);
+      columnEl.addClass(spanClasses[columnIdx]);
+      var spanItemsCount = itemsPerColumn;
+      if (modItemsPerColumn) {
+        spanItemsCount++;
+        modItemsPerColumn--;
+      }
+
+      for (var rowIdx = 0; rowIdx < spanItemsCount; rowIdx++) {
+        var listItemEl = listItems.splice(0, 1);
+        $(listItemEl).appendTo(columnEl);
+      }
+
+      $(el).append(columnEl);
     }
-
-    for (var rowIdx = 0; rowIdx < spanItemsCount; rowIdx++) {
-      var listItemEl = listItems.splice(0, 1);
-      $(listItemEl).appendTo(columnEl);
-    }
-
-    $(el).append(columnEl);
   }
 
 }

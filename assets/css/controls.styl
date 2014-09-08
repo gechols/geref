@@ -7,3 +7,40 @@ a {
 .stickyHeader {
   width: 100%;
 }
+
+.expander {
+
+  &:before {
+    content: " ";
+    background: url("arrow_right_small.svg") no-repeat 0 0;
+    width: 28px;
+    height: 20px;
+    padding-right: 10px;
+
+  }
+  &.triggered:before {
+    content: " ";
+    background: url("arrow_down_small.svg") no-repeat 0 0;
+    width: 28px;
+    height: 20px;
+  }
+}
+
+.popover {
+  min-width: 800px;
+  &.right {
+    margin-left: 40px;
+  }
+}
+
+.popover-trigger{
+
+  &:after {
+    content: " ";
+    background: url("use-this-small.svg") no-repeat 0 0;
+    width: 28px;
+    height: 20px;
+    margin-left: 5px;
+    position: absolute;
+  }
+}

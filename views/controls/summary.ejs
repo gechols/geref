@@ -41,8 +41,9 @@
     <div id="code1" <% if (controls) {%>class="hide"<%}%>>
       <pre>
         <code>
-          &lt;div data-control="Callout" data-config='{"attachTo":"#TargetElement"}'&gt;
-            HTML to put in the callout
+          &lt;a id="trigger-code1" class="expander" data-config='{"isTriggerCollapser": true}' data-control="Expander"&gt;Code snippet&lt;/a&gt;
+          &lt;div id="code1" class="hide expanded" style="display: block;"&gt;
+          ...
           &lt;/div&gt;
         </code>
       </pre>
@@ -56,19 +57,16 @@
     <h2>JS API</h2>
     <p>
       If you need programmatic control via Javascript code, use the 'require' function just like you would in your Node
-      app to include other modules. The following call tells require that you want to load the "Callout" module, takes
-      the response from the call to require, and invokes it as a function passing it a config object. Note that in this
-      case the container must be passed explicitly.
+      app to include other modules. The following call tells require that you want to load the "CSSDetect" module, takes
+      the response from the call to require, and invokes it as a function passing it a config object. If the container
+      is desired it must be passed in the <code>require</code> method.
     </p>
     <a id="trigger-code2" <% if (controls) {%>data-control="Expander" data-config='{"isTriggerCollapser": true}' <% } else { %> class="hide" <%}%>>Code snippet</a>
     <pre id="code2" <% if (controls) {%>class="hide"<%}%>>
       <code>
-        // domElement - the dom element you want the control to bind to.
-        // calloutInstance - if the control you bind to returns a public interface, then calloutInstance will
-        //                   contain a reference to that interface.
-
-        var calloutInstance = require("Callout")({
-          container: domElement
+        var cssDetect;
+        require.ensure(["CSSDetect"], function(require) {
+          cssDetect = require("CSSDetect");
         });
       </code>
     </pre>
@@ -98,16 +96,76 @@
     <p>
       All of our client side Javascript modules should be written as <a href="http://www.commonjs.org/">CommonJS</a>
       modules. This is the same module system that Node.js has adopted so it should become very familiar to everyone.
-      The basic thing to keep in mind is that your code will run inside of it's own closure which cleaning scopes your
-      code away from everyone else's code. For other's to manipulate your module, you will need to expose interfaces
-      into your code. The following two sections will show how modules can be written inside of fs.org.
+      The basic thing to keep in mind is that your code will run inside of it's own closure which scopes your code away
+      from everyone else's code. For others to manipulate your module, you will need to expose interfaces into your
+      code. The following two sections will show how modules can be written inside of fs.org.
     </p>
+    <p>CommonJS allows us to create two types of modules.</p>
+    <ol>
+      <li>
+        <a href="#"
+            <% if (controls) { %>
+              id="visual-popover"
+              class="popover-trigger"
+            <% } %>>Visual component</a>
+        <div
+            <% if (controls) { %>
+              style="display:none"
+              data-control="Popoverize"
+              data-config='{"placement": "right", "contentId": "self", "showClose": true, "targetLink": "#visual-popover"}'
+            <% } %>>
+          <p>A visual component uses a constructor to return the exported interface.</p>
+          <pre>
+            <code>
+              function UIWidget(el) {
+                // Do something with the DOM to change the element 'el'
+              }
+
+              module.exports = function (config) {
+                return new UIWidget(config.container);
+              };
+            </code>
+          </pre>
+        </div>
+      </li>
+      <li>
+        <a
+            <% if (controls) { %>
+            id="library-popover"
+            class="popover-trigger"
+            <% } %>>Library component</a>
+        <div
+            <% if (controls) { %>
+              style="display:none"
+              data-control="Popoverize"
+              data-config='{"placement": "right", "contentId": "self", "showClose": true, "targetLink": "#library-popover"}'
+            <% } %>>
+          <p>A library component can define the contents of the module.exports variable to export a public interface.</p>
+          <pre>
+            <code>
+              module.exports = {
+              func1: function(arg1){
+              // do something
+              },
+              func2: function(arg1, arg2){
+              // do something else
+              }
+              }
+            </code>
+          </pre>
+        </div>
+      </li>
+    </ol>
   </section>
   <section id="singlefile">
+    <h2>Single-file</h2>
     <p>
       Here's a simple example of a module that adds the Bold style to an element.
     </p>
     <a id="trigger-code3" <% if (controls) {%>data-control="Expander" data-config='{"isTriggerCollapser": true}' <% } else { %> class="hide" <%}%>>Code snippet</a>
+    <tabs here>
+
+    </tabs>
     <pre id="code3" <% if (controls) {%>class="hide"<%}%>>
       <code>
         function Bold(el) {
