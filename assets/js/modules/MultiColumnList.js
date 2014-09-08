@@ -3,6 +3,8 @@
  * @param config The configuration parameters.
  */
 function MultiColumnList (el, config) {
+  var cssDetect = require("CSSDetect");
+
   var configDefaults = {
     numColumns: 4,
     numRows: 0,         // 0 means no limit
@@ -27,7 +29,7 @@ function MultiColumnList (el, config) {
   }
 
   var style = null;
-  if (config.useCss3 && (style = whichStyleSupported(["-moz-column-count", "-webkit-column-count", "column-count"]))) {
+  if (config.useCss3 && (style = cssDetect.whichStyleSupported(["-moz-column-count", "-webkit-column-count", "column-count"]))) {
     $(el).css(style, config.numColumns.toString());
     return;
   }

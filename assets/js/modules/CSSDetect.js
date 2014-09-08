@@ -1,20 +1,19 @@
-(function(win){
-  "use strict";
+module.exports = {
 
-  var el = win.document.createElement('div'),
-    camelRe = /-([a-z]|[0-9])/ig,
-    cache = {},
-    support,
-    camel,
-    key;
+  isStyleSupported: function (style, value){
+    var el = window.document.createElement('div'),
+        camelRe = /-([a-z]|[0-9])/ig,
+        cache = {},
+        support,
+        camel,
+        key;
 
-  win.isStyleSupported = function(style, value){
     value = arguments.length === 2 ? value : 'inherit';
-    if('CSS' in win && 'supports' in win.CSS){
-      return win.CSS.supports(style, value);
+    if('CSS' in window && 'supports' in window.CSS){
+      return window.CSS.supports(style, value);
     }
-    if('supportsCSS' in win){
-      return win.supportsCSS(style, value);
+    if('supportsCSS' in window){
+      return window.supportsCSS(style, value);
     }
     key = style + ':' + value;
     if(key in cache){
@@ -28,11 +27,11 @@
     el.style.cssText = style+':'+value;
     support = support && (el.style[camel] !== '');
     return cache[key] = support;
-  };
+  },
 
-  win.whichStyleSupported = function(list) {
+  whichStyleSupported: function (list) {
     for (var i = 0; i < list.length; i++) {
-      if (isStyleSupported(list[i])) {
+      if (module.exports.isStyleSupported(list[i])) {
         console.log("Found supported style:", list[i]);
         return list[i];
       }
@@ -40,4 +39,4 @@
     return null;
   }
 
-})(this);
+}

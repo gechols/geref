@@ -10,6 +10,33 @@ module.exports = function(app) {
   app.get('/controls/init', function(req, res) {
     res.render('controls/init', {});
   });
+  app.get('/controls/bold', function(req, res) {
+    res.render('controls/bold', {});
+  });
+  app.get('/controls/callout', function(req, res) {
+    res.render('controls/callout', {});
+  });
+  app.get('/controls/expander', function(req, res) {
+    res.render('controls/expander', {});
+  });
+  app.get('/controls/grid', function(req, res) {
+    res.render('controls/grid', {});
+  });
+  app.get('/controls/multipleColumns', function(req, res) {
+    res.render('controls/multipleColumns', {});
+  });
+  app.get('/controls/sticky', function(req, res) {
+    res.render('controls/sticky', {});
+  });
+  app.get('/controls/summaryBefore', function(req, res) {
+    res.render('controls/summary', {"controls": false});
+  });
+  app.get('/controls/summaryAfter', function(req, res) {
+    res.render('controls/summary', {"controls": true});
+  });
+  app.get('/controls/depend', function(req, res) {
+    res.render('controls/depend', {});
+  });
   app.get('/angular', function(req, res) {
     res.render('angular/index', {});
   });
@@ -30,9 +57,6 @@ module.exports = function(app) {
   });
   app.get('/bootstrap/withoutBootstrap', function(req, res) {
     res.render('bootstrap/withoutBootstrap', {layout: "layouts/noLayout"});
-  });
-  app.get('/multipleColumns', function(req, res) {
-    res.render('multipleColumns', {});
   });
   app.get('/clientejs/clientEjs', function(req, res) {
     res.render('clientejs/clientEjs', {});

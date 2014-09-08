@@ -1,6 +1,7 @@
 function InitDiscovery (el, params) {
+  // JQuery is already included by the layout (e.g. theme-engage)
   for (var i = 0; i < params.length; i++) {
-    $(el).find(".params").append("<li><pre>" + params[i] + "</pre></li>");
+    $(el).find(".output").append("<li><pre>" + params[i] + "</pre></li>");
   }
 }
 

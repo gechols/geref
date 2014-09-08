@@ -1,0 +1,172 @@
+<% page = { 'title' : 'GERef Controls Page', 'key': 'controls'} %>
+<% assets = { 'css' : ['controls.styl'], 'js' : [] } %>
+<%- partial("_navbar", {"location": "controls"}) %>
+
+<div id="main" <% if (controls) {%>data-control="SmoothScroll"<%}%>>
+  <h1>Frontier Controls (Modules) Summary (BEFORE)</h1>
+  <nav <% if (controls) {%>data-control="StickyHeader"<%}%> style="background-color:darkseagreen; width:100%;">
+    <ul class="unstyled" <% if (controls) {%>data-control="MultiColumnList" data-config='{"numColumns": 6}' <%}%>>
+      <li><a href="#overview">Overview</a></li>
+      <li><a href="#htmlapi">HTML API</a></li>
+      <li><a href="#jsapi">JS API</a></li>
+      <li><a href="#inject">Inject</a></li>
+      <li><a href="#commonjs">CommonJS</a></li>
+      <li><a href="#multifile">Multi-file</a></li>
+    </ul>
+  </nav>
+  <section id="overview">
+    <h2>Overview</h2>
+    <p>
+      We are striving for a common approach for building JS modules and for consuming those modules in your apps. This
+      interface includes both an HTML API for binding controls to DOM elements and a Javascript API for programmatic
+      access. Examples of the different modules that are available can be found in this app as well as information
+      about using that module in your app. As modules get added for general use, please take the time to add
+      documentation to this app so others can easily find your module and quickly understand how to use it.
+    </p>
+  </section>
+  <section id="htmlapi">
+    <h2>HTML API</h2>
+    <p>
+      The intent of the HTML API is to reduce the amount of glue code web devs have to write just to wire up common
+      controls to HTML elements in the page. To bind a module to a particular HTML element, all you need to do is add
+      the "data-control" attribute to the element with the value being the name of the control you want bound to the
+      element. You can also pass an optional "data-config" attribute that contains a JSON string of config that will
+      be passed to the control. Note that whether or not you pass the optional "data-config" attribute, the control
+      will automatically be passed two pieces of data through the data-config object: container and control. Control is
+      the name of the control. Container is the tag name, id, class, etc. of the tag the control is attached to and can
+      be used as a jQuery selector.
+    </p>
+    <a id="trigger-code1" <% if (controls) {%>data-control="Expander" data-config='{"isTriggerCollapser": true}' <% } else { %> class="hide" <%}%>>Code snippet</a>
+    <div id="code1" <% if (controls) {%>class="hide"<%}%>>
+      <pre>
+        <code>
+          &lt;div data-control="Callout" data-config='{"attachTo":"#TargetElement"}'&gt;
+            HTML to put in the callout
+          &lt;/div&gt;
+        </code>
+      </pre>
+      <p data-control="Bold">
+        NOTE: The value in the "data-config" attribute must be a valid JSON string. That means you will need to quote all
+        property names and string values.
+      </p>
+    </div>
+  </section>
+  <section id="jsapi">
+    <h2>JS API</h2>
+    <p>
+      If you need programmatic control via Javascript code, use the 'require' function just like you would in your Node
+      app to include other modules. The following call tells require that you want to load the "Callout" module, takes
+      the response from the call to require, and invokes it as a function passing it a config object. Note that in this
+      case the container must be passed explicitly.
+    </p>
+    <a id="trigger-code2" <% if (controls) {%>data-control="Expander" data-config='{"isTriggerCollapser": true}' <% } else { %> class="hide" <%}%>>Code snippet</a>
+    <pre id="code2" <% if (controls) {%>class="hide"<%}%>>
+      <code>
+        // domElement - the dom element you want the control to bind to.
+        // calloutInstance - if the control you bind to returns a public interface, then calloutInstance will
+        //                   contain a reference to that interface.
+
+        var calloutInstance = require("Callout")({
+          container: domElement
+        });
+      </code>
+    </pre>
+  </section>
+  <section id="inject">
+    <h2>Inject</h2>
+    <p>
+      We've adopted the <a href="https://github.com/linkedin/inject">Inject</a> library for dynamically loading
+      Javascript modules into our apps. For the most part, use of this library should be transparent to individual
+      developers. The main purpose of the library is to resolve the dependency chains of our modules and to inject our
+      code into the browser in a CommonJS compatible way.
+    </p>
+    <p>
+      To provide a CommonJS compliant runtime environment in the browser, the 'Inject' library loads your JS modules as
+      plain text files using an AJAX request, wraps your code with the closure needed, and then evals it into the page.
+      While this works pretty well, there are some downsides to this approach. One downside is that you will have to
+      load your modules through the inject library. You cannot preload scripts into the page by including a script tag
+      on the page. The other downside should be pretty transparent to developers but since inject uses AJAX calls to
+      load the scripts, script loading is subject to the same cross domain restraints as any other AJAX call. We are
+      using the built in cross domain support that comes with Inject to load our scripts in production. The framework
+      should take care of this for developers but it's important to be aware of that script loading in production is
+      slightly different than loading scripts on your dev box.
+    </p>
+  </section>
+  <section id="commonjs">
+    <h2>CommonJS</h2>
+    <p>
+      All of our client side Javascript modules should be written as <a href="http://www.commonjs.org/">CommonJS</a>
+      modules. This is the same module system that Node.js has adopted so it should become very familiar to everyone.
+      The basic thing to keep in mind is that your code will run inside of it's own closure which cleaning scopes your
+      code away from everyone else's code. For other's to manipulate your module, you will need to expose interfaces
+      into your code. The following two sections will show how modules can be written inside of fs.org.
+    </p>
+  </section>
+  <section id="singlefile">
+    <p>
+      Here's a simple example of a module that adds the Bold style to an element.
+    </p>
+    <a id="trigger-code3" <% if (controls) {%>data-control="Expander" data-config='{"isTriggerCollapser": true}' <% } else { %> class="hide" <%}%>>Code snippet</a>
+    <pre id="code3" <% if (controls) {%>class="hide"<%}%>>
+      <code>
+        function Bold(el) {
+          $(el).css("font-weight","Bold");
+        }
+
+        module.exports = function (config) {
+          return new Bold(config.container);
+        };
+      </code>
+    </pre>
+    <p>
+      There are a couple of things to note in this code:
+    </p>
+    <ol>
+      <li>
+        module.exports - This is how you expose a public interface to your module to others. In this case we just
+        want to expose a single function that takes a config object. If you want to expose a number of different
+        functions you can either expose an object that contains multiple functions/properties, or you can just add
+        things to the "exports" object (i.e., exports.myPubInterface = function(){})
+      </li>
+      <li>
+        Missing Closure - You'll notice that there is no closure wrapping all of this code. The closure your code
+        actually runs in is injected by the container that loads your code. That all happens transparently and you
+        can write your code without worrying about polluting the global namespace.
+      </li>
+    </ol>
+    <p>
+      This is how you would use the control using the HTML API:
+    </p>
+    <a id="trigger-code4" <% if (controls) {%>data-control="Expander" data-config='{"isTriggerCollapser": true}' <% } else { %> class="hide" <%}%>>Code snippet</a>
+    <pre id="code4" <% if (controls) {%>class="hide"<%}%>>
+      <code>
+        &lt;p&gt;Frontier controls can be &lt;span data-control="Bold"&gt;extremely&lt;/span&gt; simple.&lt;/p&gt;
+      </code>
+    </pre>
+  </section>
+  <section id="multifile">
+    <h2>Multi-File Modules</h2>
+    <p>
+      Sometimes it is helpful to divide your module up into multiple files to make development easier to manage.
+      Frontier supports multi-file modules as well. To make a multi-file module, you will need to create a folder named
+      whatever you want your module to be called and then place an 'assembly.json' file in that folder. The
+      assembly.json file will specify which files will be included in your module and what order they should be
+      included.
+    </p>
+    <p>
+      SampleAssembly is fully functional multi-file module that demonstrates all of the features available to you.
+    </p>
+    <a id="trigger-code5" <% if (controls) {%>data-control="Expander" data-config='{"isTriggerCollapser": true}' <% } else { %> class="hide" <%}%>>Code snippet</a>
+    <pre id="code5" <% if (controls) {%>class="hide"<%}%>>
+      <code>
+        // assembly.json file for the SampleAssembly module in the reference application
+        {
+          "files": [
+          "helpers.js",
+          "main.js"
+          ]
+        }
+      </code>
+    </pre>
+  </section>
+</div>

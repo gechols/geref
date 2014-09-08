@@ -1,0 +1,13 @@
+<% page = { 'title' : 'GERef Controls Page', 'key': 'controls'} %>
+<% assets = { 'css' : ['homepage.styl'], 'js' : [] } %>
+<%- partial("_navbar", {"location": "controls"}) %>
+
+<div id="main">
+  <h1>Frontier Controls (Modules) Examples</h1>
+  <h2>Expander Example</h2>
+  <p>Use the <button id="trigger-one" class="btn" data-control="Expander" data-config='{ "isTriggerCollapser": "true" }'>Expander</button> control when you want to attach some hidden content to an element.</p>
+  <p id="one" class="hide" style="border:1px solid grey;width:400px">
+    Some things are better left hidden until they are really needed. Like extended explanations.
+  </p>
+
+</div>

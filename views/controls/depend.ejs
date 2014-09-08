@@ -1,0 +1,28 @@
+<% page = { 'title' : 'GERef Controls Page', 'key': 'controls'} %>
+<% assets = { 'css' : ['homepage.styl'], 'js' : [] } %>
+<%- partial("_navbar", {"location": "controls"}) %>
+
+<div id="main">
+  <h1>Frontier Controls (Modules) Examples</h1>
+  <h2>Dependency Example</h2>
+  <p>Frontier controls can use <em>require</em> to automatically resolve dependencies.</p>
+  <p>The following sections need tooltips to explain them but the page hasn't included tooltip support.</p>
+
+  <ul>
+    <li data-control="Dependency">
+      <span class="tip-needed">This entry uses the default message</span>
+    </li>
+    <li data-control="Dependency" data-config='{"tooltipText": "Voila! Tooltip is here"}'>
+      <span class="tip-needed">This entry uses a custom message via <em>data-config</em></span>
+    </li>
+  </ul>
+
+  <div data-control="Dependency" data-config='{"tooltipText": "Type something"}'>
+    <label for="entry-field">The entry field also needs a tooltip</label>
+    <input id="entry-field" class="tip-needed" type="text">
+  </div>
+
+  <p>Note: If you look in the debug console you'll notice that TooltipBS only gets loaded once
+  even though the <em>Dependency</em> control is loaded multiple times.</p>
+
+</div>
