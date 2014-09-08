@@ -61,9 +61,6 @@ module.exports = function(app) {
   app.get('/clientejs/clientEjs', function(req, res) {
     res.render('clientejs/clientEjs', {});
   });
-  app.get('/:page', function(req, res){
-    res.render(req.params.page, {});
-  });
   app.get('/', function(req, res){
     res.render("index", {});
   });
