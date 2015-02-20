@@ -37,10 +37,13 @@
   ];
 
   app.controller("ReviewController", function() {
-    this.review = {};
-    this.addReview = function(product) {
-      product.reviews.push(this.review);
-      this.review = {};
+    this.reviews = [];
+    this.addReview = function(review) {
+      this.reviews.push(this.review);
+      return this.reviews;
+    }
+    this.getReviews = function() {
+      return this.reviews;
     }
   });
 

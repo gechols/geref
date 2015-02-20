@@ -1,0 +1,21 @@
+<% page = { 'title' : 'Web Worker', 'key': 'webworker'} %>
+<% assets = { 'css' : ['webworker.styl'], 'js' : ['webworker.js'] } %>
+<%- partial("_navbar", {"location": "webworker"}) %>
+
+<div id="main">
+  <section class="row-fluid">
+    <canvas id="originalRecordCanvas" data-control="FileDropCanvas" class="span6" title="Record Image"
+        data-config='{"canvasId": "originalRecordCanvas"}'>Canvas is not supported in your browser</canvas>
+    <canvas id="adjustedRecordCanvas" class="span6" title="Adjusted Record Image">Canvas is not supported in your browser</canvas>
+  </section>
+  <div data-control="CanvasFilters" class="btn-group"
+       data-config='{"srcCanvasId": "originalRecordCanvas", "targetCanvasId": "adjustedRecordCanvas"}'>
+    <button class="btn grayscale">Grayscale</button>
+    <button class="btn brighten">Brighten</button>
+    <button class="btn threshold">Threshold</button>
+    <button class="btn sharpen">Sharpen</button>
+    <button class="btn blur">Blur</button>
+    <button class="btn sobel">Sobel</button>
+    <button class="btn custom">Custom</button>
+  </div>
+</div>

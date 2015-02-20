@@ -40,7 +40,7 @@ describe('Directive: productTitle', function () {
     return elm;
   }
 
-  it("should exist", function () {
+  it("should exist and match the input provided", function () {
     scope.product = {
       name: 'Dodecahedron',
       price: 2,
@@ -51,40 +51,40 @@ describe('Directive: productTitle', function () {
     expect(element).to.exist;
     expect(element.hasClass("ng-scope")).to.equal(true);
     expect(element.contents()).to.have.length(2);
-    expect(element.contents().html()).to.have.string("Dodecahedron");
+    expect(element.contents().html()).to.contain("Dodecahedron");
   });
 
 });
 
-//describe('Controller: PersonCardController', function () {
-//  var personCardController, scope, personCardService;
-//
-//  // Initialize the controller and scope
-//  beforeEach(function () {
-//    // Load the controller's module
-//    angular.mock.module('PersonCard');
-//
-//    // Provide any mocks needed
-//    angular.mock.module(function ($provide) {
-////      $provide.value('personCardService', new MockPersonCardService());
-//    });
-//
-//    // Inject in angular constructs otherwise,
-//    //  you would need to inject these into each test
-//    angular.mock.inject(function ($rootScope, $controller, _personCardService_) {
-//      scope = $rootScope.$new();
-//      personCardService = _personCardService_;
-//      personCardController = $controller('PersonCardController', {
-//        $scope: scope
-//      });
-//    });
-//
-//  });
-//
-//  it('should exist', function () {
-//    expect(personCardController).to.be.ok;
-//    expect(scope.pedigreeClick).to.be.a('function');
-//    expect(scope.personClick).to.be.a('function');
-//  });
+describe('Controller: ReviewController', function () {
+  var controller, scope;
 
-//});
+  // Initialize the controller and scope
+  beforeEach(function () {
+    // Load the directive's module
+    angular.mock.module('store');
+
+    // Inject in angular constructs otherwise, you would need to inject these into each test
+    angular.mock.inject(function ($rootScope, $controller) {
+      scope = $rootScope.$new();
+      controller = $controller("ReviewController");
+    });
+
+
+  });
+
+  it('should exist', function () {
+    expect(controller).to.be.ok;
+    expect(controller.addReview).to.be.a('function');
+    expect(controller.getReviews).to.be.a('function');
+  });
+
+  it('should start with 0 reviews', function () {
+    expect(controller.getReviews.length).to.equal(0);
+  });
+
+  it('should accept a new review', function () {
+    expect(controller.addReview({text: "Here's a new review"}).length).to.equal(1);
+  });
+
+});
