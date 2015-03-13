@@ -225,6 +225,19 @@ function CanvasFilters(el, config) {
     runFilter(srcCanvas, targetCanvas, Filters.sobel);
   });
 
+  var webWorker = null;
+  $(".webworker").on("click", function() {
+    if (!webWorker) {
+      webWorker = new Worker(FS.File.js("webworker.js"));
+      webWorker.onmessage = function(event) {
+        var targetCtx = targetCanvas.getContext('2d');
+        targetCtx.clearRect(0, 0, targetCanvas.width, targetCanvas.height);
+        targetCtx.fillText("Worker Thread Complete", 10, 10);
+      }
+    }
+    webWorker.postMessage("Hey there good lookin");
+  });
+
   $(document).on("imageLoaded", function(event) {
     img = event.img;
   });
