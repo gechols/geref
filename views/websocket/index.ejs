@@ -1,0 +1,9 @@
+<% page = { 'title' : 'Web Socket Page', 'key': 'websocket'} %>
+<% assets = { 'css' : ["websocket.styl"], 'js' : ["websocket.js"] } %>
+<%- partial("_navbar", {"location": "websocket"}) %>
+
+<h1>Web Socket demo</h1>
+<subject>
+  <label for="message">Message to send:</label><input id="message" type="text">
+  <label for="response">Response from server:</label><output id="response" type="text"> </output>
+</subject>

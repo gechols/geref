@@ -2,6 +2,13 @@
 <% assets = { 'css' : ["angular.styl"], 'js' : ["angular-1.2.16/angular.js", "angular/myAngularApp.js", "angular/myAngularAppController.js"] } %>
 <%- partial("_navbar", {"location": "angular"}) %>
 
+<script>
+  var connection = new WebSocket("ws://localhost:8080");
+  connection.onmessage = function(event) {
+    $
+  }
+</script>
+
 <div id="main" class="experiments" xmlns="http://www.w3.org/1999/html">
   <div class="no-layout">
     <h1>Angular Sample</h1>
