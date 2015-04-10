@@ -1,0 +1,500 @@
+#!/usr/bin/ruby
+
+require 'socket'
+
+class Prompt
+
+  OAUTH_PASS = "x-oauth-basic"
+  SCOPES = {
+    "user" => "user profile",
+    "user:email" => "user emails",
+    "user:follow" => "follow & unfollow others",
+    "public_repo" => "public repo",
+    "repo" => "private repo",
+    "repo:status" => "private commit status",
+    "delete_repo" => "delete",
+    "notifications" => "read notifications",
+    "gist" => "gist write"
+  }
+
+  def login_at_github
+    host = "github.com"
+    local_user_host = "#{ENV["USER"]} @ #{Socket.gethostname}"
+
+    puts "Managing ~/.netrc : #{host} for #{local_user_host}"
+
+    n = Netrc.read
+    user, pass = n[host]
+
+    if !user.nil?
+      if pass != OAUTH_PASS
+        puts "User '#{user}' is already logged in [~/.netrc: #{host}]"
+      else
+        puts "Token is already active in [~/.netrc: #{host}]"
+        whoami user
+      end
+    else
+      puts "Passwords never stored."
+      user = prompt "#{host} username"
+      pass = prompt_password host, user
+
+      github = Github.new :basic_auth => "#{user}:#{pass}"
+      puts "Converting user/pass to #{host} API token..."
+      authorization = github.create_oauth local_user_host
+      if authorization['token']
+        user = authorization['token']
+        pass = OAUTH_PASS
+      else
+        puts "Unable to get access token: #{authorization}"
+        user = pass = nil
+        return
+      end
+
+      unless user.nil? || pass.nil?
+        n.new_item_prefix = "# This entry was added automatically\n"
+        n[host] = user, pass
+        n.save
+        File.open "~/.curlrc", "w+" do |f|
+          f.puts "--netrc-optional"
+        end
+        whoami user
+      end
+    end
+  end
+
+  def scope_descriptions scopes
+    return "public read-only access" if scopes.nil? || scopes.empty?
+    scopes.map {|e| SCOPES[e]}.join(" ") + " access"
+  end
+
+  def whoami token
+    github = Github.new :basic_auth => "#{token}:#{OAUTH_PASS}"
+    user   = github.user
+    authz  = github.authorization(token) || {}
+    authz['scope_descriptions'] = scope_descriptions(authz['scopes'])
+    puts <<-DESC
+User: #{user['name']} (#{user['login']})
+App : #{authz['note']} [#{authz['scope_descriptions']}]
+    DESC
+  end
+
+  def prompt what
+    print "#{what}: "
+    $stdin.gets.chomp
+  end
+
+  def prompt_password host, user
+    print "#{host} password for #{user}: "
+    if $stdin.tty?
+      password = askpass
+      puts ''
+      password
+    else
+      $stdin.gets.chomp
+    end
+  end
+
+  NULL = defined?(File::NULL) ? File::NULL :
+           File.exist?('/dev/null') ? '/dev/null' : 'NUL'
+
+  def askpass
+    tty_state = `stty -g 2>#{NULL}`
+    system 'stty raw -echo -icanon isig' if $?.success?
+    pass = ''
+    while char = $stdin.getbyte and !(char == 13 or char == 10)
+      if char == 127 or char == 8
+        pass[-1,1] = '' unless pass.empty?
+      else
+        pass << char.chr
+      end
+    end
+    pass
+  ensure
+    system "stty #{tty_state}" unless tty_state.empty?
+  end
+
+end
+
+
+class Github
+
+  def initialize options
+    @user, @pass = options[:basic_auth].split(":")
+  end
+
+  def user
+    JSON.parse `curl -s https://#{@user}:#{@pass}@api.github.com/user`
+  end
+
+  def create_oauth local_user_host
+    req = "{ \"scopes\": [\"repo\"], \"note\": \"~/.netrc for #{local_user_host}\", \"url\": \"https://github.com/fs-webdev/github-netrc\" }"
+    res = `curl -sd '#{req}' https://#{@user}:#{@pass}@api.github.com/authorizations`
+    JSON.parse res
+  end
+
+  def authorization token
+    res = `curl -s https://#{@user}:#{@pass}@api.github.com/authorizations`
+    authzs = JSON.parse res
+    if found = authzs.find {|auth| auth['token'] == token }
+      found
+    else
+      nil
+    end
+  end
+
+end
+
+# The netrc gem
+# Copyright (c) 2012 Wesley Beary <geemus@gmail.com>
+# MIT licensed
+require 'rbconfig'
+
+class Netrc
+  VERSION = "0.7.7"
+
+  # see http://stackoverflow.com/questions/4871309/what-is-the-correct-way-to-detect-if-ruby-is-running-on-windows
+  WINDOWS = RbConfig::CONFIG["host_os"] =~ /mswin|mingw|cygwin/
+  CYGWIN  = RbConfig::CONFIG["host_os"] =~ /cygwin/
+
+  def self.default_path
+    if WINDOWS && !CYGWIN
+      File.join(ENV['USERPROFILE'].gsub("\\","/"), "_netrc")
+    else
+      File.join((ENV["HOME"] || "./"), ".netrc")
+    end
+  end
+
+  def self.check_permissions(path)
+    perm = File.stat(path).mode & 0777
+    if perm != 0600 && !(WINDOWS)
+      raise Error, "Permission bits for '#{path}' should be 0600, but are "+perm.to_s(8)
+    end
+  end
+
+  # Reads path and parses it as a .netrc file. If path doesn't
+  # exist, returns an empty object. Decrypt paths ending in .gpg.
+  def self.read(path=default_path)
+    check_permissions(path)
+    data = if path =~ /\.gpg$/
+      decrypted = `gpg --batch --quiet --decrypt #{path}`
+      if $?.success?
+        decrypted
+      else
+        raise Error.new("Decrypting #{path} failed.") unless $?.success?
+      end
+    else
+      File.read(path)
+    end
+    new(path, parse(lex(data.lines.to_a)))
+  rescue Errno::ENOENT
+    new(path, parse(lex([])))
+  end
+
+  def self.lex(lines)
+    tokens = []
+    for line in lines
+      content, comment = line.split(/(\s*#.*)/m)
+      content.each_char do |char|
+        case char
+        when /\s/
+          if tokens.last && tokens.last[-1..-1] =~ /\s/
+            tokens.last << char
+          else
+            tokens << char
+          end
+        else
+          if tokens.last && tokens.last[-1..-1] =~ /\S/
+            tokens.last << char
+          else
+            tokens << char
+          end
+        end
+      end
+      if comment
+        tokens << comment
+      end
+    end
+    tokens
+  end
+
+  def self.skip?(s)
+    s =~ /^\s/
+  end
+
+  # Returns two values, a header and a list of items.
+  # Each item is a tuple, containing some or all of:
+  # - machine keyword (including trailing whitespace+comments)
+  # - machine name
+  # - login keyword (including surrounding whitespace+comments)
+  # - login
+  # - password keyword (including surrounding whitespace+comments)
+  # - password
+  # - trailing chars
+  # This lets us change individual fields, then write out the file
+  # with all its original formatting.
+  def self.parse(ts)
+    cur, item = [], []
+
+    def ts.take
+      if length < 1
+        raise Error, "unexpected EOF"
+      end
+      shift
+    end
+
+    def ts.readto
+      l = []
+      while length > 0 && ! yield(self[0])
+        l << shift
+      end
+      return l.join
+    end
+
+    pre = ts.readto{|t| t == "machine"}
+    while ts.length > 0
+      cur << ts.take + ts.readto{|t| ! skip?(t)}
+      cur << ts.take
+      if ts.include?('login')
+        cur << ts.readto{|t| t == "login"} + ts.take + ts.readto{|t| ! skip?(t)}
+        cur << ts.take
+      end
+      if ts.include?('password')
+        cur << ts.readto{|t| t == "password"} + ts.take + ts.readto{|t| ! skip?(t)}
+        cur << ts.take
+      end
+      cur << ts.readto{|t| t == "machine"}
+      item << cur
+      cur = []
+    end
+
+    [pre, item]
+  end
+
+  def initialize(path, data)
+    @new_item_prefix = ''
+    @path = path
+    @pre, @data = data
+  end
+
+  attr_accessor :new_item_prefix
+
+  def [](k)
+    if item = @data.detect {|datum| datum[1] == k}
+      [item[3], item[5]]
+    end
+  end
+
+  def []=(k, info)
+    if item = @data.detect {|datum| datum[1] == k}
+      item[3], item[5] = info
+    else
+      @data << new_item(k, info[0], info[1])
+    end
+  end
+
+  def length
+    @data.length
+  end
+
+  def delete(key)
+    datum = nil
+    for value in @data
+      if value[1] == key
+        datum = value
+        break
+      end
+    end
+    @data.delete(datum)
+  end
+
+  def each(&block)
+    @data.each(&block)
+  end
+
+  def new_item(m, l, p)
+    [new_item_prefix+"machine ", m, "\n  login ", l, "\n  password ", p, "\n"]
+  end
+
+  def save
+    if @path =~ /\.gpg$/
+      e = IO.popen("gpg -a --batch --default-recipient-self -e", "r+") do |gpg|
+        gpg.puts(unparse)
+        gpg.close_write
+        gpg.read
+      end
+      raise Error.new("Encrypting #{path} failed.") unless $?.success?
+      File.open(@path, 'w', 0600) {|file| file.print(e)}
+    else
+      File.open(@path, 'w', 0600) {|file| file.print(unparse)}
+    end
+  end
+
+  def unparse
+    @pre + @data.map do |datum|
+      datum = datum.join
+      unless datum[-1..-1] == "\n"
+        datum << "\n"
+      else
+        datum
+      end
+    end.join
+  end
+
+end
+
+class Netrc::Error < ::StandardError
+end
+
+
+# Extracted from Hub
+# Copyright (c) 2009 Chris Wanstrath
+# MIT licensed
+require 'strscan'
+require 'forwardable'
+
+class JSON
+  def self.parse(data) new(data).parse end
+
+  WSP = /\s+/
+  OBJ = /[{\[]/;    HEN = /\}/;  AEN = /\]/
+  COL = /\s*:\s*/;  KEY = /\s*,\s*/
+  NUM = /-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?/
+  BOL = /true|false/;  NUL = /null/
+
+  extend Forwardable
+
+  attr_reader :scanner
+  alias_method :s, :scanner
+  def_delegators :scanner, :scan, :matched
+  private :s, :scan, :matched
+
+  def initialize data
+    @scanner = StringScanner.new data.to_s
+  end
+
+  def parse
+    space
+    object
+  end
+
+  private
+
+  def space() scan WSP end
+
+  def endkey() scan(KEY) or space end
+
+  def object
+    matched == '{' ? hash : array if scan(OBJ)
+  end
+
+  def value
+    object or string or
+      scan(NUL) ? nil :
+      scan(BOL) ? matched.size == 4:
+      scan(NUM) ? eval(matched) :
+      error
+  end
+
+  def hash
+    obj = {}
+    space
+    repeat_until(HEN) { k = string; scan(COL); obj[k] = value; endkey }
+    obj
+  end
+
+  def array
+    ary = []
+    space
+    repeat_until(AEN) { ary << value; endkey }
+    ary
+  end
+
+  SPEC = {'b' => "\b", 'f' => "\f", 'n' => "\n", 'r' => "\r", 't' => "\t"}
+  UNI = 'u'; CODE = /[a-fA-F0-9]{4}/
+  STR = /"/; STE = '"'
+  ESC = '\\'
+
+  def string
+    if scan(STR)
+      str, esc = '', false
+      while c = s.getch
+        if esc
+          str << (c == UNI ? (s.scan(CODE) || error).to_i(16).chr : SPEC[c] || c)
+          esc = false
+        else
+          case c
+          when ESC then esc = true
+          when STE then break
+          else str << c
+          end
+        end
+      end
+      str
+    end
+  end
+
+  def error
+    raise "parse error at: #{scan(/.{1,10}/m).inspect}"
+  end
+
+  def repeat_until reg
+    until scan(reg)
+      pos = s.pos
+      yield
+      error unless s.pos > pos
+    end
+  end
+
+  module Generator
+    def generate(obj)
+      raise ArgumentError unless obj.is_a? Array or obj.is_a? Hash
+      generate_type(obj)
+    end
+    alias dump generate
+
+    private
+
+    def generate_type(obj)
+      type = obj.is_a?(Numeric) ? :Numeric : obj.class.name
+      begin send(:"generate_#{type}", obj)
+      rescue NoMethodError; raise ArgumentError, "can't serialize #{type}"
+      end
+    end
+
+    ESC_MAP = Hash.new {|h,k| k }.update \
+      "\r" => 'r',
+      "\n" => 'n',
+      "\f" => 'f',
+      "\t" => 't',
+      "\b" => 'b'
+
+    def generate_String(str)
+      escaped = str.gsub(/[\r\n\f\t\b"\\]/) { "\\#{ESC_MAP[$&]}"}
+      %("#{escaped}")
+    end
+
+    def generate_simple(obj) obj.inspect end
+    alias generate_Numeric generate_simple
+    alias generate_TrueClass generate_simple
+    alias generate_FalseClass generate_simple
+
+    def generate_Symbol(sym) generate_String(sym.to_s) end
+
+    def generate_NilClass(*) 'null' end
+
+    def generate_Array(ary) '[%s]' % ary.map {|o| generate_type(o) }.join(', ') end
+
+    def generate_Hash(hash)
+      '{%s}' % hash.map { |key, value|
+        "#{generate_String(key.to_s)}: #{generate_type(value)}"
+      }.join(', ')
+    end
+  end
+
+  extend Generator
+end
+
+##
+# Ask the question
+prompt = Prompt.new
+prompt.login_at_github

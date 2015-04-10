@@ -1,4 +1,4 @@
-var host = location.origin.replace(/^https/, 'ws').replace(/^http/, 'ws').replace(":5000", "");
+var host = location.origin.replace(/^https/, 'wss').replace(/^http/, 'ws').replace(":5000", "");
 console.log("LOOK: host=", host);
 var connection = new WebSocket(host + ":8001");
 connection.onmessage = function(event) {
