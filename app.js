@@ -10,7 +10,7 @@ var themeEngage = require("theme-engage");
 var app = module.exports = woodruff(__dirname, themeEngage);
 
 var WebSocketServer = require('ws').Server,
-    wss = new WebSocketServer({port: 8080});
+    wss = new WebSocketServer({port: 8001});
 console.log("WebSocket server loaded");
 
 wss.on('connection', function(conn) {

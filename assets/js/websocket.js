@@ -1,4 +1,4 @@
-var connection = new WebSocket("ws://localhost:8080");
+var connection = new WebSocket("ws://localhost:8001");
 connection.onmessage = function(event) {
   console.log("Client received response:", event.data);
   $("#response").val(event.data);
