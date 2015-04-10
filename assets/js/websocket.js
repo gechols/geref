@@ -1,4 +1,6 @@
-var connection = new WebSocket("ws://localhost:8001");
+var host = location.origin.replace(/^http/, 'ws').replace(":5000", "");
+console.log("LOOK: host=", host);
+var connection = new WebSocket(host + ":8001");
 connection.onmessage = function(event) {
   console.log("Client received response:", event.data);
   $("#response").val(event.data);
