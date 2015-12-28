@@ -5,11 +5,11 @@
   "main": "./app.js",
   "dependencies": {
     "async": ">= 0.1.12",
-    "frontier-build-tools": "git+https://github.com/fs-webdev/frontier-build-tools.git",
+    "frontier-build-tools": "git+https://github.com/fs-webdev/frontier-build-tools.git#4.5.1",
     "q": "~1.0.1",
     "startup": "~0.3.0",
-    "theme-engage": "git+https://github.com/fs-webdev/theme-engage.git",
-    "woodruff": "git+https://github.com/fs-webdev/woodruff.git",
+    "theme-engage": "git+https://github.com/fs-webdev/theme-engage.git#4.15.0",
+    "woodruff": "git+https://github.com/fs-webdev/woodruff.git#4.7.0",
     "ws": "^0.7.1"
   },
   "devDependencies": {
