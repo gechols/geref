@@ -67,6 +67,9 @@ module.exports = function(app) {
   app.get('/webworker', function(req, res) {
     res.render('webworker/index', {});
   });
+  app.get('/audio', function(req, res) {
+    res.render('audio/audio', {});
+  });
   app.get('/', function(req, res){
     res.render("index", {});
   });

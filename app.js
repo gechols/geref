@@ -9,6 +9,7 @@ var themeEngage = require("theme-engage");
  */
 var app = module.exports = woodruff(__dirname, themeEngage);
 
+// TODO - this does NOT work with HTTPS so the key and cert is still needed
 var WebSocketServer = require('ws').Server,
     wss = new WebSocketServer({port: 8001});
 console.log("WebSocket server loaded");
